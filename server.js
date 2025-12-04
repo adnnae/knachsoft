@@ -25,21 +25,13 @@ const config = require('./config');
 try {
   console.log('🔥 Initialisation Firebase Admin...');
   
-  let serviceAccount;
+  // Firebase credentials depuis variable d'environnement UNIQUEMENT
+  if (!process.env.FIREBASE_CREDENTIALS) {
+    throw new Error('❌ Variable d\'environnement FIREBASE_CREDENTIALS manquante !');
+  }
   
-  // En production (Render), utiliser la variable d'environnement
-  if (process.env.FIREBASE_CREDENTIALS) {
-    console.log('📦 Chargement credentials depuis Environment Variable');
-    serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
-  } 
-  // En développement local, utiliser config.js
-  else if (config.FIREBASE_SERVICE_ACCOUNT) {
-    console.log('📦 Chargement credentials depuis config.js (local)');
-    serviceAccount = config.FIREBASE_SERVICE_ACCOUNT;
-  }
-  else {
-    throw new Error('Aucune credential Firebase trouvée !');
-  }
+  console.log('📦 Chargement credentials depuis Environment Variable');
+  const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
   
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),

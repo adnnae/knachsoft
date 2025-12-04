@@ -35,7 +35,20 @@ try {
 
 // Initialiser Firebase Admin
 try {
-  const serviceAccount = require(config.FIREBASE_SERVICE_ACCOUNT_PATH);
+  let serviceAccountPath = config.FIREBASE_SERVICE_ACCOUNT_PATH;
+  
+  // Sur Render.com, les Secret Files sont dans /etc/secrets/
+  const renderSecretPath = '/etc/secrets/serviceAccountKey.json';
+  const fs = require('fs');
+  
+  if (fs.existsSync(renderSecretPath)) {
+    console.log('🔍 Détecté environnement Render.com');
+    serviceAccountPath = renderSecretPath;
+  }
+  
+  console.log(`📁 Chargement du service account depuis: ${serviceAccountPath}`);
+  const serviceAccount = require(serviceAccountPath);
+  
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: config.FIREBASE_DATABASE_URL
@@ -43,6 +56,7 @@ try {
   console.log('✅ Firebase Admin initialisé');
 } catch (error) {
   console.error('❌ Erreur initialisation Firebase:', error.message);
+  console.error('📍 Stack:', error.stack);
   process.exit(1);
 }
 

@@ -1,0 +1,31 @@
+{
+  "name": "knachsoft-license-server",
+  "version": "1.0.0",
+  "description": "Serveur d'activation automatique de licences KnachSoft",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "cd client && npm run build && npm run copy-build",
+    "build:full": "cd client && npm install && npm run build && npm run copy-build",
+    "install:all": "npm install && cd client && npm install",
+    "start:all": "npm run build && npm start",
+    "deploy": "powershell -ExecutionPolicy Bypass -File deploy.ps1"
+  },
+  "keywords": ["license", "knachsoft", "firebase"],
+  "author": "KnachSoft",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "firebase-admin": "^12.0.0",
+    "dotenv": "^16.3.1",
+    "elliptic": "^6.5.4",
+    "body-parser": "^1.20.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+

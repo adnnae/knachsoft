@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Configuration sensible
+config.js
+serviceAccountKey.json
+
+# Build React
+public/
+client/build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Firebase
+.firebase/
+functions/node_modules/

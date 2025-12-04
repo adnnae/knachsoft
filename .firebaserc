@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "knachsoft"
+  },
+  "targets": {
+    "knachsoft": {
+      "hosting": {
+        "admin": [
+          "knachsoft-admin"
+        ]
+      }
+    }
+  }
+}
+

@@ -1,0 +1,29 @@
+{
+  "generated_at": "2025-12-04T17:02:20.568Z",
+  "warning": "GARDEZ CES CLÉS SECRÈTES! Ne les partagez JAMAIS!",
+  "private_key": {
+    "key_ops": [
+      "sign"
+    ],
+    "ext": true,
+    "kty": "EC",
+    "x": "zi8FKUjUPnW9YN3CaQf1piXBiLpFzM_aFb-T8ExM8Hw",
+    "y": "DchLUw4PPDAmobzSfZ6GV_ASB5-vBH508uI5Bh2Ah18",
+    "crv": "P-256",
+    "d": "WeBRsjbAjiHr5pOq3oq-IrIr2-P885CIagyKCPiuOUI"
+  },
+  "public_key": {
+    "key_ops": [
+      "verify"
+    ],
+    "ext": true,
+    "kty": "EC",
+    "x": "zi8FKUjUPnW9YN3CaQf1piXBiLpFzM_aFb-T8ExM8Hw",
+    "y": "DchLUw4PPDAmobzSfZ6GV_ASB5-vBH508uI5Bh2Ah18",
+    "crv": "P-256"
+  },
+  "usage": {
+    "private_key": "backend-server/licenseGenerator.js",
+    "public_key": "Services/LicenseService.cs"
+  }
+}

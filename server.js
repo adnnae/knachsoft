@@ -25,8 +25,21 @@ const config = require('./config');
 try {
   console.log('🔥 Initialisation Firebase Admin...');
   
-  // Utiliser directement le service account depuis config.js
-  const serviceAccount = config.FIREBASE_SERVICE_ACCOUNT;
+  let serviceAccount;
+  
+  // En production (Render), utiliser la variable d'environnement
+  if (process.env.FIREBASE_CREDENTIALS) {
+    console.log('📦 Chargement credentials depuis Environment Variable');
+    serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+  } 
+  // En développement local, utiliser config.js
+  else if (config.FIREBASE_SERVICE_ACCOUNT) {
+    console.log('📦 Chargement credentials depuis config.js (local)');
+    serviceAccount = config.FIREBASE_SERVICE_ACCOUNT;
+  }
+  else {
+    throw new Error('Aucune credential Firebase trouvée !');
+  }
   
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -34,7 +47,7 @@ try {
   });
   
   console.log('✅ Firebase Admin initialisé avec succès');
-  console.log(`📊 Project ID: ${config.FIREBASE_PROJECT_ID}`);
+  console.log(`📊 Project ID: ${serviceAccount.project_id}`);
 } catch (error) {
   console.error('❌ Erreur initialisation Firebase:', error.message);
   console.error('📍 Stack:', error.stack);

@@ -19,43 +19,22 @@ const path = require('path');
 const licenseGenerator = require('./licenseGenerator');
 
 // Charger la configuration
-let config;
-try {
-  config = require('./config');
-} catch (error) {
-  console.log('⚠️  config.js non trouvé, utilisation de la configuration par défaut');
-  config = {
-    PORT: 5000,
-    FIREBASE_SERVICE_ACCOUNT_PATH: './serviceAccountKey.json',
-    ADMIN_PANEL_URL: 'http://localhost:3000',
-    FIREBASE_DATABASE_URL: 'https://knachsoft-default-rtdb.firebaseio.com',
-    FIREBASE_PROJECT_ID: 'knachsoft'
-  };
-}
+const config = require('./config');
 
 // Initialiser Firebase Admin
 try {
-  const fs = require('fs');
-  let serviceAccount;
+  console.log('🔥 Initialisation Firebase Admin...');
   
-  // Sur Render.com, les Secret Files sont dans /etc/secrets/
-  const renderSecretPath = '/etc/secrets/serviceAccountKey.json';
-  
-  if (fs.existsSync(renderSecretPath)) {
-    console.log('🔍 Détecté environnement Render.com');
-    console.log(`📁 Chargement depuis: ${renderSecretPath}`);
-    const fileContent = fs.readFileSync(renderSecretPath, 'utf8');
-    serviceAccount = JSON.parse(fileContent);
-  } else {
-    console.log('📁 Chargement depuis le fichier local');
-    serviceAccount = require(config.FIREBASE_SERVICE_ACCOUNT_PATH);
-  }
+  // Utiliser directement le service account depuis config.js
+  const serviceAccount = config.FIREBASE_SERVICE_ACCOUNT;
   
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: config.FIREBASE_DATABASE_URL
   });
+  
   console.log('✅ Firebase Admin initialisé avec succès');
+  console.log(`📊 Project ID: ${config.FIREBASE_PROJECT_ID}`);
 } catch (error) {
   console.error('❌ Erreur initialisation Firebase:', error.message);
   console.error('📍 Stack:', error.stack);

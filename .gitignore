@@ -6,7 +6,7 @@ node_modules/
 .env.local
 
 # Configuration sensible
-config.js
+# config.js - MAINTENANT DANS GITHUB (repo privé)
 serviceAccountKey.json
 
 # Build React

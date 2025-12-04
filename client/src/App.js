@@ -54,21 +54,33 @@ function App() {
 
   const loadRequests = async () => {
     try {
+      console.log('📡 Chargement des demandes depuis:', API_URL);
+      
       const response = await axios.get(`${API_URL}/license-requests`, {
         params: { status: filter !== 'all' ? filter : undefined }
       });
-      setRequests(response.data.requests);
+      
+      console.log('📊 Réponse API:', response.data);
+      
+      const requestsData = response.data?.requests || [];
+      setRequests(requestsData);
       
       // Calculer les statistiques
       const allRequests = await axios.get(`${API_URL}/license-requests`);
+      const allRequestsData = allRequests.data?.requests || [];
+      
       const stats = {
-        pending: allRequests.data.requests.filter(r => r.status === 'pending').length,
-        approved: allRequests.data.requests.filter(r => r.status === 'approved').length,
-        rejected: allRequests.data.requests.filter(r => r.status === 'rejected').length
+        pending: allRequestsData.filter(r => r.status === 'pending').length,
+        approved: allRequestsData.filter(r => r.status === 'approved').length,
+        rejected: allRequestsData.filter(r => r.status === 'rejected').length
       };
       setStats(stats);
+      
+      console.log('✅ Statistiques:', stats);
     } catch (error) {
-      console.error('Erreur chargement demandes:', error);
+      console.error('❌ Erreur chargement demandes:', error);
+      console.error('❌ URL tentée:', `${API_URL}/license-requests`);
+      setRequests([]); // Valeur par défaut en cas d'erreur
     }
   };
 

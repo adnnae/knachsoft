@@ -37,7 +37,7 @@ function LicenseRequestsList({ requests, onApprove, onReject, onRefresh }) {
     }
   };
 
-  if (requests.length === 0) {
+  if (!requests || requests.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm border p-12 text-center">
         <div className="text-6xl mb-4">📭</div>

@@ -25,13 +25,26 @@ const config = require('./config');
 try {
   console.log('🔥 Initialisation Firebase Admin...');
   
-  // Firebase credentials depuis variable d'environnement UNIQUEMENT
-  if (!process.env.FIREBASE_CREDENTIALS) {
-    throw new Error('❌ Variable d\'environnement FIREBASE_CREDENTIALS manquante !');
-  }
+  let serviceAccount;
   
-  console.log('📦 Chargement credentials depuis Environment Variable');
-  const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+  // En production (Render) : utiliser la variable d'environnement
+  if (process.env.FIREBASE_CREDENTIALS) {
+    console.log('📦 Chargement credentials depuis Environment Variable (Production)');
+    serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+  } 
+  // En développement local : utiliser le fichier serviceAccountKey.json
+  else {
+    console.log('📦 Chargement credentials depuis serviceAccountKey.json (Local)');
+    const fs = require('fs');
+    const serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
+    
+    if (!fs.existsSync(serviceAccountPath)) {
+      throw new Error('❌ Fichier serviceAccountKey.json introuvable ! Téléchargez-le depuis Firebase Console.');
+    }
+    
+    const serviceAccountData = fs.readFileSync(serviceAccountPath, 'utf8');
+    serviceAccount = JSON.parse(serviceAccountData);
+  }
   
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
